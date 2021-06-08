@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>下载地址</title>
+    <link rel="stylesheet" href="party/layui-v2.5.5/css/layui.css" />
+    <script src="party/layui-v2.5.5/layui.all.js"></script>
+    <style>
+      .site-demo-button {
+        width: 210px;
+        margin: 20px auto 0;
+      }
+      .button_div {
+        padding: 10px;
+        margin: 0 auto !important;
+        display: block;
+        text-align: center;
+      }
+      .button_div button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <fieldset class="layui-elem-field site-demo-button">
+      <legend>生产版本下载</legend>
+      <div class="layui-btn-group button_div">
+        <button type="button" class="layui-btn" onclick="jump(0,false)">
+          web端医师工作站</button
+        ><br />
+        <button type="button" class="layui-btn" onclick="jump(1,false)">
+          医师端app-安卓</button
+        ><br />
+        <button type="button" class="layui-btn" onclick="jump(2,false)">
+          用户端app-安卓</button
+        ><br />
+        <button type="button" class="layui-btn" onclick="jump(3,false)">
+          医师端app-ios</button
+        ><br />
+        <button type="button" class="layui-btn" onclick="jump(4,false)">
+          用户端app-ios</button
+        ><br />
+      </div>
+    </fieldset>
+    <fieldset class="layui-elem-field site-demo-button">
+      <legend>准生产版本下载</legend>
+      <div class="layui-btn-group button_div">
+        <button
+          type="button"
+          class="layui-btn layui-btn-danger"
+          onclick="jump(0,true)"
+        >
+          web端医师工作站</button
+        ><br />
+        <button
+          type="button"
+          class="layui-btn layui-btn-danger"
+          onclick="jump(1,true)"
+        >
+          医师端app-安卓</button
+        ><br />
+        <button
+          type="button"
+          class="layui-btn layui-btn-danger"
+          onclick="jump(2,true)"
+        >
+          用户端app-安卓</button
+        ><br />
+        <button
+          type="button"
+          class="layui-btn layui-btn-danger"
+          onclick="jump(3,true)"
+        >
+          医师端app-ios</button
+        ><br />
+        <button
+          type="button"
+          class="layui-btn layui-btn-danger"
+          onclick="jump(4,true)"
+        >
+          用户端app-ios</button
+        ><br />
+      </div>
+    </fieldset>
+    <script>
+      // // 全77路径
+      // var line_url = [
+      //   'https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/gzkj/gk-web/index.html',
+      //   'http://gkwx.jira-x.com:10800/resources/apk/product/im/android/gzkj-im.apk',
+      //   'http://gkwx.jira-x.com:10800/resources/apk/product/app/android/gzkj-user.apk',
+      //   'itms-services://?action=download-manifest&amp;url=http://gkwx.jira-x.com:10800/resources/apk/product/im/ios/manifest.plist',
+      //   'itms-services://?action=download-manifest&amp;url=http://gkwx.jira-x.com:10800/resources/apk/product/app/ios/manifest.plist',
+      // ];
+      // var test_url = [
+      //   'https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/test/gzkj/gk-web/index.html',
+      //   'http://gkwx.jira-x.com:10800/resources/apk/test/im/android/gzkj-im.apk',
+      //   'http://gkwx.jira-x.com:10800/resources/apk/test/app/android/gzkj-user.apk',
+      //   'itms-services://?action=download-manifest&amp;url=http://gkwx.jira-x.com:10800/resources/apk/test/im/ios/manifest.plist',
+      //   'itms-services://?action=download-manifest&amp;url=http://gkwx.jira-x.com:10800/resources/apk/test/app/ios/manifest.plist',
+      // ];
+
+      // 混合路径
+      var line_url = [
+        "https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/gzkj/gk-web/index.html",
+        "http://gkwx.jira-x.com:10800/resources/apk/product/im/android/gzkj-im.apk",
+        "http://gkwx.jira-x.com:10800/resources/apk/product/app/android/gzkj-user.apk",
+        "itms-services://?action=download-manifest&amp;url=https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/gzkj/gk-app/im/ios/manifest.plist",
+        "itms-services://?action=download-manifest&amp;url=https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/gzkj/gk-app/app/ios/manifest.plist",
+      ];
+      var test_url = [
+        "https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/test/gzkj/gk-web/index.html",
+        "http://gkwx.jira-x.com:10800/resources/apk/test/im/android/gzkj-im.apk",
+        "http://gkwx.jira-x.com:10800/resources/apk/test/app/android/gzkj-user.apk",
+        "itms-services://?action=download-manifest&amp;url=https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/test/gzkj/gk-app/im/ios/manifest.plist",
+        "itms-services://?action=download-manifest&amp;url=https://hospital.nc.sgcc.com.cn/dlyyweixin/gkwx2/gk/app/test/gzkj/gk-app/app/ios/manifest.plist",
+      ];
+
+      function jump(index, bure) {
+        if (bure) {
+          location.href = test_url[index];
+        } else {
+          location.href = line_url[index];
+        }
+      }
+    </script>
+  </body>
+</html>
