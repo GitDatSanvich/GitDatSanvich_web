@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="third_party/layui/css/layui.css" />
     <script src="third_party/layui/layui.all.js"></script>
     <script src="js/base_url.js"></script>
-    <script src="js/access.js"></script>
+    <script src="third_party/axios/axios.min.js"></script>
+    <script src="js/web_access.js"></script>
     <style>
       html,body{
         height: 100%;
@@ -61,7 +62,7 @@
         <p>这是一个个人搭建的小博客，里面记录了一些来自我这个Java(主要)后端开发者，这几年自己积累的一些开发经验。</br></p>
         <p>正如您所看到的一样，下面以语言的不同进行了大体分类，大部分您能看到的东西都是来自于写死的静态页面与静态图片。</p>
         <p>不过有几处调用服务端的地方，这个服务器的资源有限，希望您不要对这个域名下的任何入口进行破坏。</br><p>
-        <p>如果您对我个人感兴趣 欢迎点击➡ <a>联系我<a/></p>
+        <p>如果您对我个人感兴趣 欢迎点击➡ <a>联系我</a></p>
       </div>
     </fieldset>
     <div class="layui-row layui-col-space10" style='width: 100%'>
@@ -144,7 +145,7 @@
         </fieldset>
       </div>
       </div>
-    <footer onload='access()'>
+    <footer onload='web_access()'>
       <p>Posted by: W3School</p>
       <p>Contact information: <a href="mailto:someone@example.com">someone@example.com</a>.</p>
     </footer>
@@ -189,11 +190,13 @@
           location.href = line_url[index];
         }
       }
-      function access(){
-        windows.alert("123123");
-      }
+      //产品经理说要针对已经失明的用户要有个提示 :)
       function alertThatBlindGuy(){
         alert("请敲击键盘F12!")
+      }
+      // 页面加载触发
+      window.onload=function(){
+        web_access(false);
       }
     </script>
   </body>
