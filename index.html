@@ -4,13 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>下载地址</title>
-    <link rel="stylesheet" href="party/layui-v2.5.5/css/layui.css" />
-    <script src="party/layui-v2.5.5/layui.all.js"></script>
+    <title>GitDatSanvich</title>
+    <link rel="stylesheet" href="third_party/layui/css/layui.css" />
+    <script src="third_party/layui/layui.all.js"></script>
+    <script src="js/base_url.js"></script>
+    <script src="js/access.js"></script>
     <style>
+      html,body{
+        height: 100%;
+      }
       .site-demo-button {
         width: 210px;
-        margin: 20px auto 0;
+        margin: 50px auto 0;
       }
       .button_div {
         padding: 10px;
@@ -21,69 +26,129 @@
       .button_div button {
         margin-top: 10px;
       }
+      p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-size: 18px
+      }
+      div {
+        display: block;
+      }
+      footer {
+        width: 100%;
+        height: 100px;
+        position:fixed; bottom: 0;
+        bottom:0px;
+        left:0px;
+        background: #333;
+      }
+      #container {
+        width: 100%;
+        overflow:auto;
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body>
-    <fieldset class="layui-elem-field site-demo-button">
-      <legend>生产版本下载</legend>
-      <div class="layui-btn-group button_div">
-        <button type="button" class="layui-btn" onclick="jump(0,false)">
-          web端医师工作站</button
-        ><br />
-        <button type="button" class="layui-btn" onclick="jump(1,false)">
-          医师端app-安卓</button
-        ><br />
-        <button type="button" class="layui-btn" onclick="jump(2,false)">
-          用户端app-安卓</button
-        ><br />
-        <button type="button" class="layui-btn" onclick="jump(3,false)">
-          医师端app-ios</button
-        ><br />
-        <button type="button" class="layui-btn" onclick="jump(4,false)">
-          用户端app-ios</button
-        ><br />
+  <div style='padding-bottom: 150px'>
+    <fieldset class="layui-elem-field site-demo-button" style="width: 1500px">
+      <legend>简介</legend>
+      <div class="layui-text" style="text-indent: 2em">
+        <p>您好，欢迎您的访问。</br></p>
+        <p>这是一个个人搭建的小博客，里面记录了一些来自我这个Java(主要)后端开发者，这几年自己积累的一些开发经验。</br></p>
+        <p>正如您所看到的一样，下面以语言的不同进行了大体分类，大部分您能看到的东西都是来自于写死的静态页面与静态图片。</p>
+        <p>不过有几处调用服务端的地方，这个服务器的资源有限，希望您不要对这个域名下的任何入口进行破坏。</br><p>
+        <p>如果您对我个人感兴趣 欢迎点击➡ <a>联系我<a/></p>
       </div>
     </fieldset>
-    <fieldset class="layui-elem-field site-demo-button">
-      <legend>准生产版本下载</legend>
-      <div class="layui-btn-group button_div">
-        <button
-          type="button"
-          class="layui-btn layui-btn-danger"
-          onclick="jump(0,true)"
-        >
-          web端医师工作站</button
-        ><br />
-        <button
-          type="button"
-          class="layui-btn layui-btn-danger"
-          onclick="jump(1,true)"
-        >
-          医师端app-安卓</button
-        ><br />
-        <button
-          type="button"
-          class="layui-btn layui-btn-danger"
-          onclick="jump(2,true)"
-        >
-          用户端app-安卓</button
-        ><br />
-        <button
-          type="button"
-          class="layui-btn layui-btn-danger"
-          onclick="jump(3,true)"
-        >
-          医师端app-ios</button
-        ><br />
-        <button
-          type="button"
-          class="layui-btn layui-btn-danger"
-          onclick="jump(4,true)"
-        >
-          用户端app-ios</button
-        ><br />
+    <div class="layui-row layui-col-space10" style='width: 100%'>
+      <div class="layui-col-md4">
+        <fieldset class="layui-elem-field site-demo-button">
+          <legend>JAVA</legend>
+          <div class="layui-btn-group button_div">
+            <button type="button" class="layui-btn" onclick="jump(0,false)">
+              web端医师工作站</button
+            ><br />
+            <button type="button" class="layui-btn" onclick="jump(1,false)">
+              医师端app-安卓</button
+            ><br />
+            <button type="button" class="layui-btn" onclick="jump(2,false)">
+              用户端app-安卓</button
+            ><br />
+            <button type="button" class="layui-btn" onclick="jump(3,false)">
+              医师端app-ios</button
+            ><br />
+            <button type="button" class="layui-btn" onclick="jump(4,false)">
+              用户端app-ios</button
+            ><br />
+          </div>
+        </fieldset>
       </div>
-    </fieldset>
+      <div class="layui-col-md4">
+        <fieldset class="layui-elem-field site-demo-button">
+          <legend>PYTHON</legend>
+          <div class="layui-btn-group button_div">
+            <button
+              type="button"
+              class="layui-btn layui-btn-danger"
+              onclick="jump(0,true)"
+            >
+              web端医师工作站</button
+            ><br />
+            <button
+              type="button"
+              class="layui-btn layui-btn-danger"
+              onclick="jump(1,true)"
+            >
+              医师端app-安卓</button
+            ><br />
+            <button
+              type="button"
+              class="layui-btn layui-btn-danger"
+              onclick="jump(2,true)"
+            >
+              用户端app-安卓</button
+            ><br />
+            <button
+              type="button"
+              class="layui-btn layui-btn-danger"
+              onclick="jump(3,true)"
+            >
+              医师端app-ios</button
+            ><br />
+            <button
+              type="button"
+              class="layui-btn layui-btn-danger"
+              onclick="jump(4,true)"
+            >
+              用户端app-ios</button
+            ><br />
+          </div>
+        </fieldset>
+      </div>
+      <div class="layui-col-md4">
+        <fieldset class="layui-elem-field site-demo-button">
+          <legend>HTML&amp;JS</legend>
+          <div class="layui-btn-group button_div">
+            <button
+              type="button"
+              class="layui-btn layui-btn-danger"
+              onclick="alertThatBlindGuy()"
+            >
+              通过键盘打开F12就好了</button
+            ><br />
+          </div>
+        </fieldset>
+      </div>
+      </div>
+    <footer onload='access()'>
+      <p>Posted by: W3School</p>
+      <p>Contact information: <a href="mailto:someone@example.com">someone@example.com</a>.</p>
+    </footer>
+    </div>
     <script>
       // // 全77路径
       // var line_url = [
@@ -123,6 +188,12 @@
         } else {
           location.href = line_url[index];
         }
+      }
+      function access(){
+        windows.alert("123123");
+      }
+      function alertThatBlindGuy(){
+        alert("请敲击键盘F12!")
       }
     </script>
   </body>
