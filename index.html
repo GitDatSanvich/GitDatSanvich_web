@@ -1,59 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>GitDatSanvich</title>
-    <link rel="stylesheet" href="third_party/layui/css/layui.css" />
-    <script src="third_party/layui/layui.all.js"></script>
-    <script src="js/base_url.js"></script>
-    <script src="third_party/axios/axios.min.js"></script>
-    <script src="js/web_access.js"></script>
-    <style>
-      html,body{
-        height: 100%;
-      }
-      .site-demo-button {
-        width: 210px;
-        margin: 50px auto 0;
-      }
-      .button_div {
-        padding: 10px;
-        margin: 0 auto !important;
-        display: block;
-        text-align: center;
-      }
-      .button_div button {
-        margin-top: 10px;
-      }
-      p {
-        display: block;
-        margin-block-start: 1em;
-        margin-block-end: 1em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-        font-size: 18px
-      }
-      div {
-        display: block;
-      }
-      footer {
-        width: 100%;
-        height: 100px;
-        position:fixed; bottom: 0;
-        bottom:0px;
-        left:0px;
-        background: #333;
-      }
-      #container {
-        width: 100%;
-        overflow:auto;
-        margin: 0 auto;
-      }
-    </style>
-  </head>
-  <body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>GitDatSanvich</title>
+  <link rel="stylesheet" href="third_party/layui/css/layui.css" />
+  <script src="third_party/layui/layui.all.js"></script>
+  <script src="js/base_url.js"></script>
+  <script src="third_party/axios/axios.min.js"></script>
+  <script src="js/web_access.js"></script>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .site-demo-button {
+      width: 210px;
+      margin: 50px auto 0;
+    }
+
+    .button_div {
+      padding: 10px;
+      margin: 0 auto !important;
+      display: block;
+      text-align: center;
+    }
+
+    .button_div button {
+      margin-top: 10px;
+    }
+
+    p {
+      display: block;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      font-size: 18px
+    }
+
+    div {
+      display: block;
+    }
+
+    footer {
+      width: 100%;
+      height: 100px;
+      position: fixed;
+      bottom: 0;
+      bottom: 0px;
+      left: 0px;
+      background: rgb(100, 100, 100);
+    }
+
+    #container {
+      width: 100%;
+      overflow: auto;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
   <div style='padding-bottom: 150px'>
     <fieldset class="layui-elem-field site-demo-button" style="width: 1500px">
       <legend>简介</legend>
@@ -61,7 +72,8 @@
         <p>您好，欢迎您的访问。</br></p>
         <p>这是一个个人搭建的小博客，里面记录了一些来自我这个Java(主要)后端开发者，这几年自己积累的一些开发经验。</br></p>
         <p>正如您所看到的一样，下面以语言的不同进行了大体分类，大部分您能看到的东西都是来自于写死的静态页面与静态图片。</p>
-        <p>不过有几处调用服务端的地方，这个服务器的资源有限，希望您不要对这个域名下的任何入口进行破坏。</br><p>
+        <p>不过有几处调用服务端的地方，这个服务器的资源有限，希望您不要对这个域名下的任何入口进行破坏。</br>
+        <p>
         <p>如果您对我个人感兴趣 欢迎点击➡ <a>联系我</a></p>
       </div>
     </fieldset>
@@ -71,20 +83,15 @@
           <legend>JAVA</legend>
           <div class="layui-btn-group button_div">
             <button type="button" class="layui-btn" onclick="jump(0,false)">
-              web端医师工作站</button
-            ><br />
+              抽象的积分逻辑</button><br />
             <button type="button" class="layui-btn" onclick="jump(1,false)">
-              医师端app-安卓</button
-            ><br />
+              自定义的阻塞线程池</button><br />
             <button type="button" class="layui-btn" onclick="jump(2,false)">
-              用户端app-安卓</button
-            ><br />
+              客户端上传视频的视频封面获取</button><br />
             <button type="button" class="layui-btn" onclick="jump(3,false)">
-              医师端app-ios</button
-            ><br />
+              一个极简的组织树存储查询设计</button><br />
             <button type="button" class="layui-btn" onclick="jump(4,false)">
-              用户端app-ios</button
-            ><br />
+              用户端app-ios</button><br />
           </div>
         </fieldset>
       </div>
@@ -92,41 +99,16 @@
         <fieldset class="layui-elem-field site-demo-button">
           <legend>PYTHON</legend>
           <div class="layui-btn-group button_div">
-            <button
-              type="button"
-              class="layui-btn layui-btn-danger"
-              onclick="jump(0,true)"
-            >
-              web端医师工作站</button
-            ><br />
-            <button
-              type="button"
-              class="layui-btn layui-btn-danger"
-              onclick="jump(1,true)"
-            >
-              医师端app-安卓</button
-            ><br />
-            <button
-              type="button"
-              class="layui-btn layui-btn-danger"
-              onclick="jump(2,true)"
-            >
-              用户端app-安卓</button
-            ><br />
-            <button
-              type="button"
-              class="layui-btn layui-btn-danger"
-              onclick="jump(3,true)"
-            >
-              医师端app-ios</button
-            ><br />
-            <button
-              type="button"
-              class="layui-btn layui-btn-danger"
-              onclick="jump(4,true)"
-            >
-              用户端app-ios</button
-            ><br />
+            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(0,true)">
+              通过图像识别玩游戏</button><br />
+            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(1,true)">
+            </button><br />
+            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(2,true)">
+              用户端app-安卓</button><br />
+            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(3,true)">
+              医师端app-ios</button><br />
+            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(4,true)">
+              用户端app-ios</button><br />
           </div>
         </fieldset>
       </div>
@@ -134,54 +116,50 @@
         <fieldset class="layui-elem-field site-demo-button">
           <legend>HTML&amp;JS</legend>
           <div class="layui-btn-group button_div">
-            <button
-              type="button"
-              class="layui-btn layui-btn-danger"
-              onclick="alertThatBlindGuy()"
-            >
-              通过键盘打开F12就好了</button
-            ><br />
+            <button type="button" class="layui-btn layui-btn-danger" onclick="alertThatBlindGuy()">
+              通过键盘打开F12就好了</button><br />
           </div>
         </fieldset>
       </div>
-      </div>
-    <footer onload='web_access()'>
-      <p>Posted by: W3School</p>
-      <p>Contact information: <a href="mailto:someone@example.com">someone@example.com</a>.</p>
-    </footer>
     </div>
-    <script>
-      // 混合路径
-      var line_url = [
-        "www.baidu.com",
-        "www.baidu.com",
-        "www.baidu.com",
-        "www.baidu.com",
-        "www.baidu.com",
-      ];
-      var test_url = [
-        "www.baidu.com",
-        "www.baidu.com",
-        "www.baidu.com",
-        "www.baidu.com",
-        "www.baidu.com",
-      ];
+    <footer>
+      <p style="text-align: center;">您已经访问这个网页 X 次</p>
+      <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com">tc704321764@outlook.com</a>.</p>
+    </footer>
+  </div>
+  <script>
+    // 混合路径
+    var line_url = [
+      "www.baidu.com",
+      "www.baidu.com",
+      "www.baidu.com",
+      "www.baidu.com",
+      "www.baidu.com",
+    ];
+    var test_url = [
+      "www.baidu.com",
+      "www.baidu.com",
+      "www.baidu.com",
+      "www.baidu.com",
+      "www.baidu.com",
+    ];
 
-      function jump(index, bure) {
-        if (bure) {
-          location.href = test_url[index];
-        } else {
-          location.href = line_url[index];
-        }
+    function jump(index, bure) {
+      if (bure) {
+        location.href = test_url[index];
+      } else {
+        location.href = line_url[index];
       }
-      //产品经理说要针对已经失明的用户要有个提示 :)
-      function alertThatBlindGuy(){
-        alert("请大力敲击键盘F12按钮！")
-      }
-      // 页面加载触发
-      window.onload=function(){
-        web_access(false);
-      }
-    </script>
-  </body>
+    }
+    //产品经理说要针对已经失明的用户要有个提示 :)
+    function alertThatBlindGuy() {
+      alert("请大力敲击键盘F12按钮！")
+    }
+    // 页面加载触发
+    window.onload = function () {
+      web_access(false);
+    }
+  </script>
+</body>
+
 </html>
