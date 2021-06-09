@@ -91,7 +91,7 @@
             <button type="button" class="layui-btn" onclick="jump(3,false)">
               一个极简的组织树存储查询设计</button><br />
             <button type="button" class="layui-btn" onclick="jump(4,false)">
-              用户端app-ios</button><br />
+              web实时查看服务器log</button><br />
           </div>
         </fieldset>
       </div>
@@ -101,14 +101,6 @@
           <div class="layui-btn-group button_div">
             <button type="button" class="layui-btn layui-btn-warm" onclick="jump(0,true)">
               通过图像识别玩游戏</button><br />
-            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(1,true)">
-            </button><br />
-            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(2,true)">
-              用户端app-安卓</button><br />
-            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(3,true)">
-              医师端app-ios</button><br />
-            <button type="button" class="layui-btn layui-btn-warm" onclick="jump(4,true)">
-              用户端app-ios</button><br />
           </div>
         </fieldset>
       </div>
@@ -123,8 +115,14 @@
       </div>
     </div>
     <footer>
-      <p style="text-align: center;">您已经访问这个网页 X 次</p>
-      <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com">tc704321764@outlook.com</a>.</p>
+      <span style="font-size:18px;">
+        <div style="text-align: center;">
+          <div style="text-align: center;display:inline">您已经访问这个网页</div>
+          <div id="access_time" style="text-align: center;display:inline"></div>
+          <div style="text-align: center;display:inline">次</div>
+        </div>
+      </span>
+      <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com">tc704321764@outlook.com</a></p>
     </footer>
   </div>
   <script>
