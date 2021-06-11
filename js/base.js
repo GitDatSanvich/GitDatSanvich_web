@@ -4,7 +4,7 @@ function backToIndex() {
 
 
 var java_url = [
-    "www.baidu.com",
+    "/html/abstract_points.html",
     "www.baidu.com",
     "www.baidu.com",
     "www.baidu.com",

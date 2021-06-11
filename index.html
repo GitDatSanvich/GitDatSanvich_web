@@ -83,7 +83,7 @@
         <fieldset class="layui-elem-field site-demo-button">
           <legend>JAVA</legend>
           <div class="layui-btn-group button_div">
-            <button type="button" class="layui-btn" onclick="jump(0,false)">
+            <button type="button" class="layui-btn" onclick="jump(0,'java')">
               抽象的积分逻辑</button><br />
             <button type="button" class="layui-btn" onclick="jump(1,false)">
               自定义的阻塞线程池</button><br />
@@ -118,11 +118,11 @@
         <fieldset class="layui-elem-field site-demo-button">
           <legend>SHELL</legend>
           <div class="layui-btn-group button_div">
-            <button type="button" class="layui-btn layui-btn-danger" onclick="alertThatBlindGuy()">
+            <button type="button" class="layui-btn layui-btn-warm" onclick="alertThatBlindGuy()">
               一个生产的上线脚本</button><br />
           </div>
           <div class="layui-btn-group button_div">
-            <button type="button" class="layui-btn layui-btn-danger" onclick="alertThatBlindGuy()">
+            <button type="button" class="layui-btn layui-btn-warm" onclick="alertThatBlindGuy()">
               文件传输EXPECT脚本</button><br />
           </div>
         </fieldset>
@@ -136,13 +136,26 @@
           </div>
         </fieldset>
       </div>
+      <div class="layui-col-md4">
+        <fieldset class="layui-elem-field site-demo-button">
+          <legend>SQL</legend>
+          <div class="layui-btn-group button_div">
+            <button type="button" class="layui-btn layui-btn-danger" onclick="alertThatBlindGuy()">
+              糟糕的设计产生的sql</button><br />
+          </div>
+        </fieldset>
+      </div>
     </div>
     <footer style="color:#b9b9b9;">
       <span style="font-size:18px;">
         <div style="text-align: center;">
-          <div style="text-align: center;display:inline;">您已经访问这个网页</div>
-          <div id="access_time" style="text-align: center;display:inline"></div>
-          <div style="text-align: center;display:inline">次</div>
+          <div style="text-align: center;display:inline;">您的IP</div>
+          <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+          <div style="text-align: center;display:inline;">已经访问这个网页</div>
+          <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+          <div style="text-align: center;display:inline">次，网页总访问量</div>
+          <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+          <div style="text-align: center;display:inline">次。</div>
         </div>
       </span>
       <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
