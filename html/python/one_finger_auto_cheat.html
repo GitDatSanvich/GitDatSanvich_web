@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>抽象的积分逻辑</title>
-    <link rel="stylesheet" href="../third_party/layui/css/layui.css">
-    <script src="../third_party/layui/layui.all.js"></script>
-    <script src="../js/web_access.js"></script>
-    <script src="../third_party/axios/axios.min.js"></script>
-    <script src="../js/base.js"></script>
-    <script src="../js/base_url.js"></script>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
     <style>
         .first_size_field {
             width: 95%;
@@ -43,6 +43,7 @@
             font-size: 18px;
             padding: 0 0 0 50px;
         }
+
         img {
             display: block;
             margin-block-start: 1em;
@@ -103,30 +104,32 @@
     <div class="wgt-header-title wgt-header-title-shadow">
         <div class="wgt-header-title-content" style="display: block;">
             <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
-                onclick="backToIndex()"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
-            <h1 class="wgt-header-title-text" style="display:inline-block;">抽象的积分逻辑</h1>
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">通过图像识别玩游戏</h1>
         </div>
     </div>
     <fieldset class="layui-elem-field first_size_field">
         <legend>需求描述</legend>
-        <p>这个需求来自于当时开发的一个手机APP，需要针对用户特定操作为用户添加用户积分。</p>
-        <p>积分各种规则逻辑各不相同，同时触发积分的位置多且复杂，需求在开发前针对积分从哪添加添加多少没有明确逻辑。</p>
+        <p>这个需求应该很好理解，就是一个通过图像识别实现鼠标自动点击玩游戏的程序</p>
     </fieldset>
     <fieldset class="layui-elem-field normal_size_field">
         <legend>开发设计</legend>
-        <p>首先先通过日常玩手机使用APP的经验，我不认为此时此刻产品经理与我相比，会对积分有更深刻或更怪异的理解，所以我给手机APP用户积分的致逻辑进行了大致的分类。</p>
-        <p>一、单次操作，后不再累加的积分</p>
-        <p>二、每次操作均匀叠加每日有上限的积分</p>
-        <p>三、每次操作不均匀叠加每日有上限的积分</p>
-        <p>四、每次操作到就累加无上限的积分</p>
-        <p>五、随着需求的渐渐完善需要客制化的积分</p>
-        <p>针对积分的分类好了之后，我想到积分如果每次都需要前端调用的话对前端的修改量会相当大，所以首先确定积分添加的触发点！</p>
-        <p>因为是SpringCloud项目所以首先我添加了个Interceptor</p>
-        <img src="https://www.gitdatsanvich.com/file/data/31fd831aae1a40789491aea55e8d4f89.png"/>
+        <p>通过win32api、win32con、win32gui和win32ui（网上查的这几个截图最快，能够通过窗口识别还能让程序后台运行截图，不过显而易见只支持windows平台），</p>
+        <p>实时进行图片截取，并通过win32gui获取游戏屏幕位置与按键识别位置</p>
+        <p>通过按键识别判断，通过win32api实现用户点击操作，从而实现自动玩游戏</p>
+        <p>多说无益，直接来看效果吧！↓</p>
     </fieldset>
+    <fieldset class="layui-elem-field normal_size_field">
+        <legend>实现效果</legend>
+        <br/>
+        <video src="https://www.gitdatsanvich.com/file/data/a9d7077e14354ca790dacb2b1aae3f89.mp4" width="90%" style="padding: 0 0 0 50px;" controls="controls">
+            <source src="https://www.gitdatsanvich.com/file/data/a9d7077e14354ca790dacb2b1aae3f89.mp4" type="video/mp4">
+        </video>
+    </fieldset>
+    <br /><br /><br /><br /><br /><br />
     <div style="text-align: center;">
         <button type="button" class="layui-btn layui-btn-radius layui-btn-primary"
-            onclick="backToIndex()">返回主页</button><br>
+            onclick="backToIndex(2)">返回主页</button><br>
     </div>
     <footer style="color:#b9b9b9;">
         <span style="font-size:18px;">

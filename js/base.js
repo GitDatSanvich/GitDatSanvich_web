@@ -1,17 +1,21 @@
-function backToIndex() {
-    location.href = "../index.html";
+function backToIndex(level) {
+    var outLevel = "";
+    for (i = 0; i < level; i++) {
+        outLevel = outLevel + "../";
+    }
+    location.href = outLevel + "index.html";
 }
 
 
 var java_url = [
-    "/html/abstract_points.html",
+    "/html/java/abstract_points.html",
     "www.baidu.com",
     "www.baidu.com",
     "www.baidu.com",
     "www.baidu.com",
 ];
 var python_url = [
-    "www.baidu.com",
+    "/html/python/one_finger_auto_cheat.html",
     "www.baidu.com",
     "www.baidu.com",
     "www.baidu.com",
@@ -52,7 +56,7 @@ function jump(index, type) {
             location.href = me_url[index];
             break;
         case "index":
-            backToIndex();
+            backToIndex(index);
             break;
     }
 }

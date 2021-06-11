@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>抽象的积分逻辑</title>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
+    <style>
+        .first_size_field {
+            width: 95%;
+            margin: 100px auto 0;
+        }
+
+        .normal_size_field {
+            width: 95%;
+            margin: 20px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        img {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        footer {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            bottom: 0;
+            bottom: 0px;
+            left: 0px;
+            background: #252222;
+        }
+
+        .wgt-header-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 995;
+            width: 100%;
+            height: 50px;
+            background-color: #fff;
+        }
+
+        .wgt-header-title-shadow {
+            box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+
+        }
+
+        .wgt-header-title-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 594px;
+            font: 24px PingFangSC-Medium;
+            color: #333;
+            line-height: 55px;
+            vertical-align: middle;
+        }
+
+        .wgt-header-title-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wgt-header-title wgt-header-title-shadow">
+        <div class="wgt-header-title-content" style="display: block;">
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">抽象的积分逻辑</h1>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>需求描述</legend>
+        <p>这个需求来自于当时开发的一个手机APP，需要针对用户特定操作为用户添加用户积分。</p>
+        <p>积分各种规则逻辑各不相同，同时触发积分的位置多且复杂，需求在开发前针对积分从哪添加添加多少没有明确逻辑。</p>
+    </fieldset>
+    <fieldset class="layui-elem-field normal_size_field">
+        <legend>开发设计</legend>
+        <p>首先先通过日常玩手机使用APP的经验，我不认为此时此刻产品经理与我相比，会对积分有更深刻或更怪异的理解，所以我给手机APP用户积分的致逻辑进行了大致的分类。</p>
+        <p>一、单次操作，后不再累加的积分</p>
+        <p>二、每次操作均匀叠加每日有上限的积分</p>
+        <p>三、每次操作不均匀叠加每日有上限的积分</p>
+        <p>四、每次操作到就累加无上限的积分</p>
+        <p>五、随着需求的渐渐完善需要客制化的积分</p>
+        <p>针对积分的分类好了之后，我想到积分如果每次都需要前端调用的话对前端的修改量会相当大，所以首先确定积分添加的触发点！</p>
+        <p>因为是SpringCloud项目所以首先我添加了一个Interceptor</p>
+        <img title="" src="https://www.gitdatsanvich.com/file/data/31fd831aae1a40789491aea55e8d4f89.png" />
+        <p>考虑到SpringCloud是多服务构成我认为并不是每一个服务都需要加载到这个Interceptor其次并不是每一个请求都需要进行拦截，所以我决定从配置入手。</p>
+        <p>首先在需要拦截的服务内添加配置</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/7822928a73e047ffaedf989acc2e4398.png" />
+        <p>↑ 需要拦截的接口用“;”符号分隔</p>
+        <p>最后通过拦截器配置类把拦截器和Url依次配置进去</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/ecc616b39cf9482db64447105b4d0193.png" />
+        <p>这样的话，加入了配置了积分相关配置的服务会自动加载并运行到拦截器了！</p>
+        <p>以上确定了触发点，再确定触发推送内容。</p>
+        <p>一、首先肯定是先确定当前操作是否成功，若失败积分肯定不能添加。</p>
+        <p>二、然后需要用户ID，哪个用户操作的要确定，当前我在使用的这个框架直接可以从线程中的用户token内取出来。</p>
+        <p>三、最重要的当然是当前请求的URL了，可以通过拦截器的HttpServletRequest内取出</p>
+        <p>四、返回值内容（部分业务需要通过内容去解析）</p>
+        <p>最后进行推送当前用的是SpringCloud理所当然的需要Feign组件调用。</p>
+        <p>以上，触发点和推送内容都准备好了。可以去开始规划积分具体给用户怎么添加。</p>
+        <br />
+        <p>======================业务分割线======================</p>
+        <br />
+        <p>首先我们需要通过url确定用户触发的哪种积分规则，那么我们需要先建个表！</p>
+        <p></p>
+    </fieldset>
+    <br /><br /><br /><br /><br /><br />
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary"
+            onclick="backToIndex(2)">返回主页</button><br>
+    </div>
+    <footer style="color:#b9b9b9;">
+        <span style="font-size:18px;">
+            <div style="text-align: center;">
+                <div style="text-align: center;display:inline;">您的IP</div>
+                <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+                <div style="text-align: center;display:inline;">已经访问这个网页</div>
+                <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+                <div style="text-align: center;display:inline">次，网页总访问量</div>
+                <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+                <div style="text-align: center;display:inline">次。</div>
+            </div>
+        </span>
+        <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+                style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+    </footer>
+    <script>
+        window.onload = function () {
+            web_access(false);
+        }
+    </script>
+</body>
+
+</html>
