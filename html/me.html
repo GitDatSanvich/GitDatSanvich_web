@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>关于我</title>
+    <link rel="stylesheet" href="../third_party/layui/css/layui.css">
+    <script src="../party/layui-v2.5.5/layui.all.js"></script>
+    <script src="../js/base.js"></script>
+    <style>
+        .site-demo-button {
+            width: 300px;
+            margin: 200px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset class="layui-elem-field site-demo-button">
+        <legend>我的地址分流</legend>
+        <div class="layui-btn-group button_div">
+            <button type="button" class="layui-btn layui-btn-normal" onclick="jump(0,'me')">我的github</button><br>
+        </div>
+    </fieldset>
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary"
+            onclick="jump(0,'index')">返回主页</button><br>
+    </div>
+</body>
+
+</html>
