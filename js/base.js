@@ -9,8 +9,8 @@ function backToIndex(level) {
 
 var java_url = [
     "/html/java/abstract_points.html",
-    "www.baidu.com",
-    "www.baidu.com",
+    "/html/java/custome_thread_pool.html",
+    "/html/java/analysis_video_cover.html",
     "www.baidu.com",
     "www.baidu.com",
 ];

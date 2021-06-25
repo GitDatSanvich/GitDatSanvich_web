@@ -141,13 +141,146 @@
         <br />
         <p>======================业务分割线======================</p>
         <br />
-        <p>首先我们需要通过url确定用户触发的哪种积分规则，那么我们需要先建个表！</p>
+        <p>首先我们需要通过url确定用户触发的哪种积分规则，那么我们需要建个配置表</p>
+        <p>关于配置表设计我需要考虑到以下四种情况</p>
+        <p>一、单次操作触发添加的积分数量</p>
+        <p>二、每种积分种类循环区间内最大值</p>
+        <p>三、积分操作业务类型种类区分</p>
+        <p>四、客制化积分配置方式</p>
+        <p>那么建表需要至少需要以下几个字段</p>
+        <div style="padding: 0 0 0 50px;display:flex">
+            <div style="display:inline-block;">
+                <p>1.id</p>
+                <p>2.因为触发方式的定义所以这里要存url进行区分</p>
+                <p>3.单次操作的积分添加数量</p>
+                <p>4.当前操作区间内最大积分数量</p>
+                <p>5.积分计算类型的枚举</p>
+                <p>6.针对自定义的积分可能需要在时间区间内再限制区间分段计算，所以要标注区间等级。</p>
+            </div>
+            <div
+                style="display:inline-block;text-align:center;margin: 0 auto;justify-content:center;align-items: center;">
+                <p style="align-items: center;">右侧是生产上的表 →</p>
+                <p style="align-items: center;">虽然有一些业务字段在里面</p>
+                <p style="align-items: center;">不过可以拿来参考一下</p>
+            </div>
+            <div style="display:inline-block;">
+                <img src="https://www.gitdatsanvich.com/file/data/8b21f1cdc9714d589eb956d531f247e6.png"
+                    style="width: 425px;height:200px"></img>
+            </div>
+        </div>
+        <p>定义好表了那么接下来定义存储方式</p>
+        <fieldset class="layui-elem-field normal_size_field">
+            <p>首先是针对按天平操作平均结算的，每个规则的URL一条就够，规则标识相同且唯一。（规则标识在示例表里为key_name字段）同时依据需求，定义好每次操作的积分和区间内积分上限。</p>
+        </fieldset>
+        <fieldset class="layui-elem-field normal_size_field">
+            <p>接下来是针对按月操作平均结算的，规则同上，规则标识与其他规则不同区分开。</p>
+        </fieldset>
+        <p>因为大部分都是然后是以上两种方式，剩下的其实就是自定义的积分类型了</p>
+        <fieldset class="layui-elem-field normal_size_field">
+            <p>自定义需求一：这个手机APP是个健康管理类APP，要记录用户步数，步数走5000步添加3积分，步数走10000步添加4积分，步数走到15000步添加5积分，每天一节算。</p>
+            <p>针对上面这个需求，需要添加三条规则5000步的一条，10000步的一条，15000步的一条，因为步数的添加接口是同一个所以url也是一致的，积分和积分上限也是依据需求与需求一致，触发分和最高分一致就行，level字段依据依次配置顺序排列下来
+            </p>
+        </fieldset>
+        <fieldset class="layui-elem-field normal_size_field">
+            <p>自定义需求二：根据用户资料填写完整度，添加相应积分用户资料填写10%，添加2积分，用户资料填写30%添加3积分，用户资料填写80%添加3积分，用户资料填写100%添加5积分，无时间限制区间。</p>
+            <p>针对上面这个需求，需要添加三条规则10%一条，30%一条，80%一条,100%积分一条，积分和积分上限也是依据需求与需求一致，触发分和最高分一致同步数需求一样。</p>
+        </fieldset>
+        <div style="display:inline-block;text-align:center;margin: 0 auto;justify-content:center;align-items: center;">
+            <div style="display:inline-block;">
+                <p style="align-items: center;">最终这个表大概是这个样子的 → </p>
+            </div>
+            <div style="display:inline-block;">
+                <img src="https://www.gitdatsanvich.com/file/data/a1dcd54b50f347aea14696fb56c63b75.png"
+                    style="width: 1150px;height:200px"></img>
+            </div>
+        </div>
+        <p>表设计好了，接下来可以写业务代码了。</p>
+        <br />
+        <p>======================业务分割线======================</p>
+        <br />
+        <p>一.首先定义一个抽象的积分类这个类后面会包含积分所有的抽象方法</p>
+        <p>二.然后依次创建积分类并继承抽象积分类</p>
+        <p>三.然后开始顺着控制层写业务代码</p>
+        <div style="display:inline-block;text-align:left;margin: 0 auto;justify-content:left;align-items: left;">
+            <p style="padding: 0 0 0 75px;">1.由于发送过来都是url所以先通过数据库查询URL所对应的规则</p>
+            <p style="padding: 0 0 0 75px;">2.由于单个URL对应的是多个规则所以查询出来是个List</p>
+            <p style="padding: 0 0 0 75px;">3.这里可以加上缓存</p>
+        </div>
+        <img src="https://www.gitdatsanvich.com/file/data/e3a2793dba174b9db89b6791f3d0a02b.png"
+            style="width: 1150px;height:200px">
+        </img>
+        <p>接着拿查询出来的规则列表进入业务层继续执行添加操作。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/05a56ce426bd44c2882cddb169e5d5d4.png"
+            style="width: 700px;height:90px">
+        </img>
+        <p>首先由于触发点是内部接口触发同时对用户积分改变单一用户的请求可能会非常快所以要考虑幂等性，需要先上把业务锁，锁住当前用户的ID执行完这次才积分添加才能执行下一次积分添加。</p>
+        <p>这里由于多服务所以用的Redis锁，怎么加就不赘述了，培训机构出来的小朋友都会了。</p>
+        <p>我这里加了重试机制，所以外部调用的时候传了个参数0。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/b06e3625a21742e18d14a02194d10cfc.png"
+            style="width: 1150px;height:500px">
+        </img>
+        <p>接下来进入业务。</p>
+        <p>首先通过之前查询出来的规则，定义当前需要处理的积分类型返回一个具体的抽象对象。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/39f41f30337a428b88684691421dd554.png"
+            style="width: 900px;height:50px">
+        </img>
+        <p>↑上面是调用 ↓下面是抽象逻辑返回的是个具体的实体，接收的仍然是抽象类</p>
+        <img src="https://www.gitdatsanvich.com/file/data/22efbf1af055434b84661a4ced90a3b8.png"
+            style="width: 1150px;height:500px">
+        </img>
+        <p>积分的添加需要依据用户当前的积分的规则和用户已有的流水添加，所以我们要查询用户流水，由于每个种类的积分需要查询流水的规则不一样所以定义抽象方法，生成查询条件使用统一的查询方法，
+            每个种类的查询条件生成需要依据业务来写。</p>
+        <p>我这里使用的是mybatis-plus所以生成了Wrapper</p>
+        <img src="https://www.gitdatsanvich.com/file/data/1c7694411cc04ce68e0d05b9fb59092b.png"
+            style="width: 1150px;height:170px">
+        </img>
+        <img src="https://www.gitdatsanvich.com/file/data/b8cc31509e8b4d8caa829d8a78b2acb2.png"
+            style="width: 1000px;height:170px">
+        </img>
+        <p>↑上面是调用 ↓下面是几个实现类内部的实现，返回值全部都是LambdaQueryWrapper对象。</p>
+        <div style="display:inline-block;text-align:center;margin: 0 auto;justify-content:center;align-items: center;">
+            <div style="display:inline-block;">
+                <p style="align-items: center;">每日积分↓</p>
+                <img src="https://www.gitdatsanvich.com/file/data/108c7b90fed4400cb1b6e8a43c69233c.png"
+                    style="width: 1400px;height:200px"></img>
+                <p style="align-items: center;">每月积分↓</p>
+                <img src="https://www.gitdatsanvich.com/file/data/9fe7474e398c4449b765f831cbb3cbdd.png"
+                style="width: 1400px;height:200px"></img>
+                <p style="align-items: center;">公共抽象方法↓</p>
+                <img src="https://www.gitdatsanvich.com/file/data/792c1e9ddc504298ad6bc99b13ccc609.png"
+                style="width: 1400px;height:900px"></img>
+            </div>
+        </div>
+        <p>通过抽象方法查询出用户流水后，仍然需要通过抽象的方式，依据业务的不同生成本次调用需要生成的流水，由于自定义积分业务逻辑不同可能需要生成多比流水所以这里返回流水为列表形式。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/c716c25e02b2436197da556ec764b64a.png"
+        style="width: 1200px;height:150px"></img>
+        <p>↑上面是调用 ↓下面是每日积分和每月积分的实现，因为两个逻辑是一模一样的，其余业务的处理方式虽然不同但是大体思路也和这个差不多所以只展示一个。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/a551367b7f344030a20ae3d1240c20eb.png"
+        style="width: 1100px;height:500px"></img>
+        <p>最后依照生成的流水改变用户的积分钱包，并存入流水和钱包</p>
+        <img src="https://www.gitdatsanvich.com/file/data/ddd427844af948cf9784d5167d87b967.png"
+        style="width: 1100px;height:200px"></img>
+        <p>别忘了最后释放锁</p>
+        <img src="https://www.gitdatsanvich.com/file/data/3827d333ea114788a85dc9b527361d87.png"
+        style="width: 1100px;height:185px"></img>
+        <br/>
+        <fieldset class="layui-elem-field normal_size_field">
+            <legend>小结</legend>
+            <p>这个串代码大概是2019冬天左右写的，当时还比较年轻现在看来还有很多东西没有考虑到，
+                比如说直接在规则里定义一些时间长度，
+                或者在用户积分详细记录的时候使用能存储更多记录的mongodb等等还有很大的拓展空间。</p>
+        </fieldset>
+        <p></p>
+        <p></p>
+        <p></p>
         <p></p>
     </fieldset>
-    <br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <div style="text-align: center;">
-        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary"
-            onclick="backToIndex(2)">返回主页</button><br>
+        <button>
+            <type type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)"><i
+                    class="layui-icon">&#xe65c;</i> 返回主页</type>
+        </button><br>
     </div><br /><br /><br /><br /><br /><br />
     </div>
     <footer style="color:#b9b9b9;">
