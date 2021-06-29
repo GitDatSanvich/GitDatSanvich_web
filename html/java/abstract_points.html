@@ -245,25 +245,25 @@
                     style="width: 1400px;height:200px"></img>
                 <p style="align-items: center;">每月积分↓</p>
                 <img src="https://www.gitdatsanvich.com/file/data/9fe7474e398c4449b765f831cbb3cbdd.png"
-                style="width: 1400px;height:200px"></img>
+                    style="width: 1400px;height:200px"></img>
                 <p style="align-items: center;">公共抽象方法↓</p>
                 <img src="https://www.gitdatsanvich.com/file/data/792c1e9ddc504298ad6bc99b13ccc609.png"
-                style="width: 1400px;height:900px"></img>
+                    style="width: 1400px;height:900px"></img>
             </div>
         </div>
         <p>通过抽象方法查询出用户流水后，仍然需要通过抽象的方式，依据业务的不同生成本次调用需要生成的流水，由于自定义积分业务逻辑不同可能需要生成多比流水所以这里返回流水为列表形式。</p>
         <img src="https://www.gitdatsanvich.com/file/data/c716c25e02b2436197da556ec764b64a.png"
-        style="width: 1200px;height:150px"></img>
+            style="width: 1200px;height:150px"></img>
         <p>↑上面是调用 ↓下面是每日积分和每月积分的实现，因为两个逻辑是一模一样的，其余业务的处理方式虽然不同但是大体思路也和这个差不多所以只展示一个。</p>
         <img src="https://www.gitdatsanvich.com/file/data/a551367b7f344030a20ae3d1240c20eb.png"
-        style="width: 1100px;height:500px"></img>
+            style="width: 1100px;height:500px"></img>
         <p>最后依照生成的流水改变用户的积分钱包，并存入流水和钱包</p>
         <img src="https://www.gitdatsanvich.com/file/data/ddd427844af948cf9784d5167d87b967.png"
-        style="width: 1100px;height:200px"></img>
+            style="width: 1100px;height:200px"></img>
         <p>别忘了最后释放锁</p>
         <img src="https://www.gitdatsanvich.com/file/data/3827d333ea114788a85dc9b527361d87.png"
-        style="width: 1100px;height:185px"></img>
-        <br/>
+            style="width: 1100px;height:185px"></img>
+        <br />
         <fieldset class="layui-elem-field normal_size_field">
             <legend>小结</legend>
             <p>这个串代码大概是2019冬天左右写的，当时还比较年轻现在看来还有很多东西没有考虑到，
@@ -300,7 +300,7 @@
     </footer>
     <script>
         window.onload = function () {
-            web_access(false);
+            web_access(false, 3);
         }
     </script>
 </body>

@@ -74,7 +74,7 @@
         <p> 目前我在工作中主要处理负责项目下比较复杂的业务逻辑，一些设计方式也非常有趣，只可惜不方便拿来展示。</p>
         <p> 正如您所看到的一样，下面以语言的不同进行了大体分类，大部分您能看到的东西都是来自于写死的静态页面,
           与通过已经实现的功能上传到服务器静态图片。</p>
-        <p> 不过有几处调用服务端的地方，这个服务器的资源有限，希望您不要对这个域名下的任何入口进行破坏。</p>
+        <p> 不过有几处调用服务端的地方，这个服务器的资源有限，而且存储应用服务器（放nosql和关系型数据库）和应用服务器（您访问的这个域名）之间网络通信较慢（服务器的物理距离太远了），希望您不要对这个域名下的任何入口进行破坏。</p>
         <p>如果您对我个人感兴趣 欢迎点击➡ <a onclick="jump(0,'to_me')">关于我</a></p>
       </div>
     </fieldset>
@@ -158,7 +158,8 @@
           <div style="text-align: center;display:inline">次。</div>
         </div>
       </span>
-      <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+      <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+          style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
     </footer>
   </div>
   <script>
@@ -168,7 +169,7 @@
     }
     // 页面加载触发
     window.onload = function () {
-      web_access(false);
+      web_access(false, 0);
     }
   </script>
 </body>
