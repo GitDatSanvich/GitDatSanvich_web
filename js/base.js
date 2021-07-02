@@ -12,7 +12,7 @@ var java_url = [
     "/html/java/custome_thread_pool.html",
     "/html/java/analysis_video_cover.html",
     "www.baidu.com",
-    "www.baidu.com",
+    "/html/java/log_viewer.html",
 ];
 var python_url = [
     "/html/python/one_finger_auto_cheat.html",

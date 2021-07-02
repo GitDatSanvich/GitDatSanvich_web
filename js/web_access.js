@@ -16,6 +16,8 @@ function web_access(login_check, level) {
             //失败直接跳转 error
             to_error(level);
         }
+    }).catch(err => {
+        to_error(level);
     });
 }
 
