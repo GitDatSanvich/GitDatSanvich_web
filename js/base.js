@@ -22,16 +22,18 @@ var python_url = [
     "www.baidu.com",
 ];
 var shell_url = [
-
+    "/html/shell/online_shell.html",
+    "/html/shell/file_transfer_expect.html",
 ];
-var liunx_url = [
-    ""
+var linux_url = [
+    "/html/linux/nginx_config.html"
 ];
 var to_me = [
-    "/html/me.html"
+    "/html/me.html",
 ]
 var me_url = [
-    "https://github.com/GitDatSanvich"
+    "https://github.com/GitDatSanvich",
+    "https://www.vultr.com/?ref=7321184"
 ];
 function jump(index, type) {
     switch (type) {
@@ -46,7 +48,7 @@ function jump(index, type) {
             location.href = shell_url[index];
             break;
         case "linux":
-            location.href = liunx_url[index];
+            location.href = linux_url[index];
             break;
         case "to_me":
             location.href = to_me[index];
@@ -59,4 +61,8 @@ function jump(index, type) {
             backToIndex(index);
             break;
     }
+}
+
+function imNotReadyYet() {
+    alert("这部分内容还没准备好呢！")
 }

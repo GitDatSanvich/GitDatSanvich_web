@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nginx添加模组流程解析</title>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
+    <style>
+        .first_size_field {
+            width: 95%;
+            margin: 100px auto 0;
+        }
+
+        .normal_size_field {
+            width: 95%;
+            margin: 20px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        img {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        footer {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            bottom: 0;
+            bottom: 0px;
+            left: 0px;
+            background: #252222;
+        }
+
+        .wgt-header-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 995;
+            width: 100%;
+            height: 50px;
+            background-color: #fff;
+        }
+
+        .wgt-header-title-shadow {
+            box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+
+        }
+
+        .wgt-header-title-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 594px;
+            font: 24px PingFangSC-Medium;
+            color: #333;
+            line-height: 55px;
+            vertical-align: middle;
+        }
+
+        .wgt-header-title-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wgt-header-title wgt-header-title-shadow">
+        <div class="wgt-header-title-content" style="display: block;">
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">nginx添加模组流程解析</h1>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>nginx安装准备</legend>
+        <p>为了这个文章我先去租了个机子，便宜又省事随用随停的租海外服务器的地方在这里↓</p>
+        <a href="https://www.vultr.com/?ref=7321184" style="display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            text-align: center;">👉 https://www.vultr.com/ 👈</a>
+        <br /><br /><br /><br />
+        <p>接下来安装Nginx需要使用的组件</p>
+        <p>Nginx依赖于gcc的编译环境。</p>
+        <p> yum -y install gcc-c++</p>
+        <p>Nginx的http模块需要使用pcre来解析正则表达式，需要安装pcre。</p>
+        <p> yum install -y pcre pcre-devel</p>
+        <p>安装依赖的解压包。</p>
+        <p> yum install -y zlib zlib-devel</p>
+        <p>ssl 功能需要 openssl 库，安装openssl。</p>
+        <p> yum install -y openssl openssl-devel</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/bd68f39253044ec8af281cbd154574ff.png"
+            style="width: 1200px;height:800px" />
+        <p>一顿操作下来最后环境安装完成</p>
+    </fieldset>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>安装Nginx</legend>
+        <p>先去Nginx官网选个自己喜欢的版本。</p>
+        <a href="http://nginx.org/en/download.html" style="display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;">链接🔗Nginx官网</a>
+        <p>其中Mainline version 是类似于正在开发的版本，难免会有bug一般不用。</p>
+        <p>Stable version为最新的稳定版本，可以考虑使用。</p>
+        <p>Legacy versions是之前的稳定版本，可以调自己最喜欢的用。</p>
+        <p>我这里准备使用当前最新的1.20.1版本，我先复制链接</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/0a46b3c2139f4e059044ad7aef6d13c1.png"
+            style="width: 500px;height:400px" />
+        <p>然后进入Linux在想放Nginx安装包的地方把刚刚复制的链接通过wget命令下载进去</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/a12274d72dcd4378bd3737513b46f07f.png"
+            style="width: 1200px;height:200px" />
+        <p>解压安装包 tar -zxvf nginx-1.20.1.tar.gz</p>
+        <p>这是解压完成之后的文件</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/f066bec87fe648979033850b0d8f8751.png"
+            style="width: 600px;height:50px" />
+        <p>接下来调用 configure 脚本，configure脚本可携带参数，可以配置需要安装的Nginx插件</p>
+        <p>调用完成会多出一个文件和一个文件夹</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/ccd7a8975f0e475f9cb27b087341c52f.png"
+            style="width: 800px;height:50px" />
+        <p>objs文件夹内文件有如下几个文件</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/7a2be4a8479d4d1fa0fe69a06330aa27.png"
+            style="width: 800px;height:70px" />
+        <p>我对这一步的理解，是通过configure命令，和携带的参数对MakeFile等文件进行配置，真正的Nginx的编译和各种插件安装应该在下一步make内执行的</p>
+        <br />
+        <p>接下来调用make命令</p>
+        <p>make命令完成后，进入objs文件夹，可以看到nginx文件已经有了，也就是说nginx已经编译完成可以启动了。</p>
+        <p>我也试着启动了以下nginx如下图</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/7663e6b2745f452a80bbfa8cbdaa31e1.png"
+            style="width: 1200px;height:300px" />
+        <p>虽然报错，但是能明显的看出来nginx是已经编译好的状态了</p>
+        <p>最后执行 make install</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/8ed81ccf46c64a828b1a0670c4a265bc.png"
+            style="width: 400px;height:500px" />
+        <p>仔细观察make install的输出可以发现，make install无非是针对配置文件的生成和文件夹的生成</p>
+        <p>最后启动下Nginx 可以看到Nginx启动成功</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/4e59cb387edb47b5b33a72f4b2f1bd00.png"
+            style="width: 400px;height:200px" />
+        <p>综上，在已安装了的nginx再添加nginx模组时，只需要进行configure 和 make 就好了。</p>
+        <p>make完成之后直接从objs文件夹内取出nginx文件对以已经安装的ngxin进行替换再重启。</p>
+        <p>注意：configure 增量的向nginx添加模组时记得要把被替换的的nginx模组也加上，对被替换的nginx使用./nginx -V 命令查看要被替换的nginx都有哪些模组。</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/ee5a853d641f4f8cb9d9ef9cdf03c758.png"
+            style="width: 1000px;height:200px" />
+    </fieldset>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)"><i
+                class="layui-icon">&#xe65c;</i> 返回主页</button>
+        <br />
+    </div><br /><br /><br /><br /><br /><br />
+    </div>
+    <footer style="color:#b9b9b9;">
+        <span style="font-size:18px;">
+            <div style="text-align: center;">
+                <div style="text-align: center;display:inline;">您的IP</div>
+                <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+                <div style="text-align: center;display:inline;">已经访问这个网页</div>
+                <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+                <div style="text-align: center;display:inline">次，网页总访问量</div>
+                <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+                <div style="text-align: center;display:inline">次。</div>
+            </div>
+        </span>
+        <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+                style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+    </footer>
+    <script>
+        window.onload = function () {
+            web_access(false, 3);
+        }
+    </script>
+</body>
+
+</html>

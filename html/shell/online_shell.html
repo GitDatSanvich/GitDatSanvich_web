@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>log在线查看</title>
+    <title>生产上的上线脚本</title>
     <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
     <script src="../../third_party/layui/layui.all.js"></script>
     <script src="../../js/web_access.js"></script>
@@ -105,27 +105,52 @@
         <div class="wgt-header-title-content" style="display: block;">
             <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
                 onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
-            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">log在线查看</h1>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">生产上的上线脚本</h1>
         </div>
     </div>
     <fieldset class="layui-elem-field first_size_field">
-        <legend>这个是一个在线查看服务器log的页面</legend>
-        <p>当前页会启动一个websocket链接向服务器，服务器会每五秒左右向已连接的websocket推送增量日志</p>
-        <p>如果没有看见日志的话可能是因为websocket断开或者服务器没打日志吧！</p>
-        <p>页面的websocket状态可以通过F12来查看</p>
-        <p>如果当前页面的websocket在发生异常的情况下，若连接存在的情况下会断开连接发起自动重连，若连接不存在的情况下会直接自动重连。</p>
-        <p>如果服务主动断开了连接（服务器重启/停止 *极端情况*）那么就不会再连接了。</p>
+        <legend>环境描述与准备工作</legend>
+        <p>当时写这个脚本的项目是在docker下运行，处理上线过程很繁琐，由于项目整个体系不大但是工程繁多，打包上线很麻烦所以写了这个脚本。</p>
+        <p>思路很简单，自动化拉代码，自动化打包，自动化备份，自动化服务上线。</p>
+        <p>服务器是centenOS7，为了上线在这个在服务器上安装了Git和MAVEN，JDK是已经安装好的。</p>
+        <p>首先先在服务器上找地方用git把对应的项目分支克隆下来。</p>
+        <p>然后尝试使用MVN打个包，打包成功后就可以开始写shell脚本了。</p>
     </fieldset>
     <fieldset class="layui-elem-field normal_size_field">
-        <legend>日志</legend>
-        <div id="show_window">
-        </div>
+        <legend>脚本编写</legend>
+        <p>一、最首先，shell标识</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/9743d3e4b40d461ab286580e3b47977d.png"
+            style="width: 160px;height:50px" />
+        <p>二、进入对应目录进行git拉取操作</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/beadffd3405e4a3cb90794e01b32c55a.png"
+            style="width: 550px;height:200px" />
+        <p>三、Maven打包</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/05ac946cfbf145a1b5574b948e9fd66b.png"
+        style="width: 1000px;height:100px" />
+        <p>四、当前应用包备份，并准备刚打出来的应用包。</p>
+        <p>当前这里有两个应用包，一个应用包是在Git目录下刚刚打出来的，一个应用包是在工作目录下正在运行的。要备份正在运行的应用包，并把刚刚打出来的应用包拿出来放在工作目录下。</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/08fdff85df9c41589f4855837dfb688a.png"
+        style="width: 1000px;height:210px" />
+        <p>五、应用下线</p>
+        <p>进入到工作目录查询docker容器停止docker容器并删除docker镜像。</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/b743ec8b05cd41f79b5f5a56e0443690.png"
+        style="width: 700px;height:400px" />
+        <p>六、应用上线并启动</p>
+        <p>1.通过写好的DockerFile 使用docker打镜像</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/41d78cbbd5c5456b8b386dae1c09d39c.png"
+        style="width: 1200px;height:75px"/>
+        <p>2.docker启动镜像并设置Host</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/b93a78e0bf084ed7b0e5b89b9c4cfa3d.png"
+        style="width: 1700px;height:75px"/>
+        <p>最后一步可以把log打出来，直接查看启动日志。</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/b926c55278824830944eb1bec44d12e8.png"
+        style="width: 300px;height:75px"/>
     </fieldset>
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <div style="text-align: center;">
         <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)"><i
                 class="layui-icon">&#xe65c;</i> 返回主页</button>
-        <br>
+        <br />
     </div><br /><br /><br /><br /><br /><br />
     </div>
     <footer style="color:#b9b9b9;">
@@ -145,52 +170,7 @@
     </footer>
     <script>
         window.onload = function () {
-            //请求
-            web_access(false, 2);
-            //websocket链接
-            socket_init(0);
-        }
-        //websocket 连接方法
-        function socket_init(try_time) {
-            if (!"WebSocket" in window) {
-                alert("您的浏览器貌似不太支持WebSocket呢！");
-                return;
-            }
-            if (try_time >= 100) {
-                alert("WebSocket多次连接失败，请刷新页面并重试。");
-                return;
-            }
-            // 打开 websocket
-            var ws = new WebSocket(socket_url);
-            ws.onopen = function () {
-                console.log("websocket链接成功");
-            };
-            ws.onmessage = function (evt) {
-                received_msg = evt.data
-                console.log("收到数据" + received_msg);
-                var innerHtml = document.getElementById('show_window').innerHTML
-                innerHtml = innerHtml + '<p style="font-size: 12px;">' + received_msg + '</p>'
-                document.getElementById('show_window').innerHTML = innerHtml;
-            };
-            ws.onclose = function () {
-                // 关闭 websocket
-                console.log("websocket关闭");
-            };
-            ws.onerror = function () {
-                //websocket 出错
-                //已连接
-                console.log("websocket出错！");
-                // 0 - 表示连接尚未建立。
-                // 1 - 表示连接已建立，可以进行通信。
-                // 2 - 表示连接正在进行关闭。
-                // 3 - 表示连接已经关闭或者连接不能打开。
-                if (ws.readyState === 1) {
-                    //关闭 websocket
-                    ws.close();
-                }
-                //重新连接
-                socket_init(try_time + 1);
-            }
+            web_access(false, 3);
         }
     </script>
 </body>
