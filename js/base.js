@@ -15,15 +15,11 @@ var java_url = [
     "/html/java/log_viewer.html",
 ];
 var python_url = [
-    "/html/python/one_finger_auto_cheat.html",
-    "www.baidu.com",
-    "www.baidu.com",
-    "www.baidu.com",
-    "www.baidu.com",
+    "/html/python/one_finger_auto_cheat.html"
 ];
 var shell_url = [
     "/html/shell/online_shell.html",
-    "/html/shell/file_transfer_expect.html",
+    "/html/shell/file_transfer_expect.html"
 ];
 var linux_url = [
     "/html/linux/nginx_config.html"
@@ -35,6 +31,9 @@ var me_url = [
     "https://github.com/GitDatSanvich",
     "https://www.vultr.com/?ref=7321184"
 ];
+var sql = [
+    "/html/sql/awful_design_sql.html"
+]
 function jump(index, type) {
     switch (type) {
         // index 调用
@@ -56,6 +55,9 @@ function jump(index, type) {
         // me页面调用
         case "me":
             location.href = me_url[index];
+            break;
+        case "sql":
+            location.href = sql[index];
             break;
         case "index":
             backToIndex(index);
