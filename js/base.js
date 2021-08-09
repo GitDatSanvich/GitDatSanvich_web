@@ -66,5 +66,5 @@ function jump(index, type) {
 }
 
 function imNotReadyYet() {
-    alert("这部分内容还没准备好呢！")
+    alert("这部分内容还没准备好呢！");
 }

@@ -162,15 +162,27 @@
             }
             // 打开 websocket
             var ws = new WebSocket(socket_url);
+            var innerHtml = document.getElementById('show_window').innerHTML
+            innerHtml = innerHtml + '<p style="font-size: 12px;" align="right">websocket正在连接</p>'
+            document.getElementById('show_window').innerHTML = innerHtml;
             ws.onopen = function () {
                 console.log("websocket链接成功");
+                var innerHtml = document.getElementById('show_window').innerHTML
+                innerHtml = innerHtml + '<p style="font-size: 12px;" align="right">websocket链接成功</p>'
+                document.getElementById('show_window').innerHTML = innerHtml;
             };
             ws.onmessage = function (evt) {
                 received_msg = evt.data
                 console.log("收到数据" + received_msg);
-                var innerHtml = document.getElementById('show_window').innerHTML
-                innerHtml = innerHtml + '<p style="font-size: 12px;">' + received_msg + '</p>'
-                document.getElementById('show_window').innerHTML = innerHtml;
+                if ('pong' === received_msg) {
+                    var innerHtml = document.getElementById('show_window').innerHTML
+                    innerHtml = innerHtml + '<p style="font-size: 12px;">心跳响应</p>'
+                    document.getElementById('show_window').innerHTML = innerHtml;
+                } else {
+                    var innerHtml = document.getElementById('show_window').innerHTML
+                    innerHtml = innerHtml + '<p style="font-size: 12px;">' + received_msg + '</p>'
+                    document.getElementById('show_window').innerHTML = innerHtml;
+                }
             };
             ws.onclose = function () {
                 // 关闭 websocket
@@ -179,6 +191,7 @@
             ws.onerror = function () {
                 //websocket 出错
                 //已连接
+                console.log(ws);
                 console.log("websocket出错！");
                 // 0 - 表示连接尚未建立。
                 // 1 - 表示连接已建立，可以进行通信。
@@ -190,6 +203,22 @@
                 }
                 //重新连接
                 socket_init(try_time + 1);
+            }
+            heart_beat(ws);
+        }
+        function heart_beat(ws) {
+            setInterval(send_heart_beat, 10000, ws);
+        }
+        function send_heart_beat(ws) {
+            if (ws != null && ws.readyState === 1) {
+                ws.send('ping');
+                var innerHtml = document.getElementById('show_window').innerHTML
+                innerHtml = innerHtml + '<p style="font-size: 12px;" align="right">发送心跳</p>'
+                document.getElementById('show_window').innerHTML = innerHtml;
+            } else if (ws != null && ws.readyState !== 1) {
+                var innerHtml = document.getElementById('show_window').innerHTML
+                innerHtml = innerHtml + '<p style="font-size: 12px;" align="right">心跳发送失败 等待重连</p>'
+                document.getElementById('show_window').innerHTML = innerHtml;
             }
         }
     </script>
