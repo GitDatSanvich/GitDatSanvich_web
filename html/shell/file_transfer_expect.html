@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Expect脚本</title>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
+    <style>
+        .first_size_field {
+            width: 95%;
+            margin: 100px auto 0;
+        }
+
+        .normal_size_field {
+            width: 95%;
+            margin: 20px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        img {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        footer {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            bottom: 0;
+            bottom: 0px;
+            left: 0px;
+            background: #252222;
+        }
+
+        .wgt-header-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 995;
+            width: 100%;
+            height: 50px;
+            background-color: #fff;
+        }
+
+        .wgt-header-title-shadow {
+            box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+
+        }
+
+        .wgt-header-title-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 594px;
+            font: 24px PingFangSC-Medium;
+            color: #333;
+            line-height: 55px;
+            vertical-align: middle;
+        }
+
+        .wgt-header-title-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wgt-header-title wgt-header-title-shadow">
+        <div class="wgt-header-title-content" style="display: block;">
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">Expect脚本</h1>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>环境描述与准备工作</legend>
+        <p>这个是上一个生产上线脚本之前使用的脚本，在这里只做记录，不做解析。</p>
+        <a href="https://blog.csdn.net/nero_g/article/details/53945654" style="display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-size: 18px;
+        padding: 0 0 0 50px;">链接🔗:expect学习笔记及实例详解</a>
+    </fieldset>
+    <fieldset class="layui-elem-field normal_size_field">
+        <legend>脚本</legend>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/ea0060a82ec64e0aa31993ab6884be04.png"
+            style="width: 1200px;height:200px" />
+    </fieldset>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)"><i
+                class="layui-icon">&#xe65c;</i> 返回主页</button>
+        <br />
+    </div><br /><br /><br /><br /><br /><br />
+    </div>
+    <footer style="color:#b9b9b9;">
+        <span style="font-size:18px;">
+            <div style="text-align: center;">
+                <div style="text-align: center;display:inline;">您的IP</div>
+                <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+                <div style="text-align: center;display:inline;">已经访问这个网页</div>
+                <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+                <div style="text-align: center;display:inline">次，网页总访问量</div>
+                <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+                <div style="text-align: center;display:inline">次。</div>
+            </div>
+        </span>
+        <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+                style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+    </footer>
+    <script>
+        window.onload = function () {
+            web_access(false, 3);
+        }
+    </script>
+</body>
+
+</html>

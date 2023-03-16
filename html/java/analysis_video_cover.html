@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>客户端上传视频的视频封面获取</title>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
+    <style>
+        .first_size_field {
+            width: 95%;
+            margin: 100px auto 0;
+        }
+
+        .normal_size_field {
+            width: 95%;
+            margin: 20px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        img {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        footer {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            bottom: 0;
+            bottom: 0px;
+            left: 0px;
+            background: #252222;
+        }
+
+        .wgt-header-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 995;
+            width: 100%;
+            height: 50px;
+            background-color: #fff;
+        }
+
+        .wgt-header-title-shadow {
+            box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+
+        }
+
+        .wgt-header-title-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 594px;
+            font: 24px PingFangSC-Medium;
+            color: #333;
+            line-height: 55px;
+            vertical-align: middle;
+        }
+
+        .wgt-header-title-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wgt-header-title wgt-header-title-shadow">
+        <div class="wgt-header-title-content" style="display: block;">
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">客户端上传视频的视频封面获取</h1>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>需求描述</legend>
+        <p>新的项目开始了，项目经理拍了拍我的肩膀说：“小唐啊，咱这有个文件上传的功能就交给你了。”</p>
+        <p>我想都没想就回答“好啊，这还不容易？仨项目的文件上传都我都写的！”于是这个文件上传功能就全权由我负责了</p>
+        <p>随着项目的迭代，各种测试，这个项目的文件服务从最早的代码写入磁盘迁移到了FastDfs后来有因为网速原因迁移到了阿里OSS上，一波三折。</p>
+        <p>如今又来需求说是前端控件在获取视频的时候不能自动判断视频是否时黑屏，所以视频的播放封面老是黑的问我可以不可以处理，我搜了搜资料有了以下解决方案。</p>
+    </fieldset>
+    <fieldset class="layui-elem-field normal_size_field">
+        <legend>开发设计</legend>
+        <p>业务逻辑很简单先从控制层开始</p>
+        <p>首先先是接口，以我多年的文件服务经验文件上传一个多文件上传的接口就足够了。</p>
+        <p>同时需要考虑的是当前的业务，一部分业务需要针对文件类型做限制，比如说音频上传的页面需要只能上传音频，前端告诉我他限制不住所以也拿来后端限制。</p>
+        <p>然后是一个否需要缩略图的标识，部分业务需要部分业务不需要所以带了个标识。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/7ee6a24ba91749108adbecdeb3fe8155.png"
+            style="width: 1050px;height:325px"></img>
+        <p>在文件操作的最首先，由于现在的文件是保存在阿里的OSS上的，文件重名会导致原文件被覆盖所以，先针对这一个文件生成一个UUID。</p>
+        <p>接下来是针对文件头的校验，这个好多项目经理喜欢做文件头的校验，我觉得大可不必不过还是做了，在做文件头校验的时候顺便把可上传类型和前端传过来的类型校验也做了，最后返回了个后台判断的文件类型，这个很简单不赘述了。</p>
+        <p>直接贴代码</p>
+        <img src="https://www.gitdatsanvich.com/file/data/1cf17dd1a9d04e13852f0446e248fee9.png"
+            style="width: 1050px;height:1000px"></img>
+        <p>最后的返回值是个层层校验通过已经定义好的类型，由于APP播放查看的组件类型被限制为了这几种。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/c200dcf924284e39b8b1195e5a319de3.png"
+            style="width: 500px;height:300px"></img>
+        <a style="display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            text-align:center;"
+            href="https://www.gitdatsanvich.com/file/data/static/fileHeaderChecker.zip">防止看不懂这里可以下载代码</a>
+        <p>这里重点关注的是被分为IMAGE类型和VIDEO类型的文件，针对IMAGE类型文件需要做缩略图，针对VIDEO文件需要做截图处理。</p>
+        <p>那么接下来，是针对这个文件后缀名获取和流的处理由于需要对流进行操作，防止对流的误关闭（好多封装方法会自动关闭流，导致再次使用那个流会产生空指针的问题。）所以要进行流的复制。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/87e2960109834fbb8ae82daba06341be.png"
+            style="width: 800px;height:300px"></img>
+        <p>接下来是保存原文件由于后面还会调用接收的不一定全都是文件类型所以用流接收。FastDfs的保存就不展示了，直接调用就好了</p>
+        <p>这里是项目里的OSS的保存方法</p>
+        <img src="https://www.gitdatsanvich.com/file/data/e6d74309da764f639399dfd8700f9c70.png"
+            style="width: 1000px;height:400px"></img>
+        <p>这里是当前您访问的这个页面所对应的后台，文件保存方法是直接写入服务器的。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/9abf5ef600904a0db2384db3ba43c267.png"
+            style="width: 1000px;height:350px"></img>
+        <p>文件的名称就是全局的uuid+后缀名的形式了</p>
+        <p>把文件保存好接下来就是重头戏文件缩略图保存了</p>
+        <img src="https://www.gitdatsanvich.com/file/data/8fd7ae5b1254401992e60d5f296ef68a.png"
+            style="width: 800px;height:150px"></img>
+        <p>首先通过前面判断好的类型对类型执行不同操作</p>
+        <img src="https://www.gitdatsanvich.com/file/data/8ea89d2737ec4737a9ea173d31da2d2a.png"
+            style="width: 1200px;height:550px"></img>
+        <p>首先是图片类型，图片类型的截图比较简单主要使用的是第三方类库，主要使用的是thumbnailator。</p>
+        <p>这里需要注意，thumbnailator默认使用的图片类库是JAVA自带图片类库，针对PNG等图片的支持不是很全。</p>
+        <p>网上搜集了好多资料，找到了个第三方类库的JAR包"webp-imageio-core-0.1.0.jar"放在了工程里。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/18fce8622b4043fe8a52203b2db8b551.png"
+            style="width: 650px;height:250px"></img>
+        <p>图片缩略图的生成就很简单</p>
+        <img src="https://www.gitdatsanvich.com/file/data/034da887e4d846ddaff1aaa914fe6f09.png"
+            style="width: 1100px;height:160px"></img>
+        <p>最后调用的就是上面提到的保存接口，缩略图的文件名称逻辑和FastDfs类似，全局的uuid+缩略图标识+文件后缀名的方式保存的了</p>
+        <p>接下来是视频截图的获取</p>
+        <p>视频的截图功能主要是依赖javacv的FFmpegFrameGrabber和视频支持库实现的</p>
+        <p>由于FFmpegFrameGrabber的特性想要执行视频的截图首先需要将视频开启播放解析，会比较吃服务器内存。</p>
+        <p>单个视频的解析我测试到的内存占用峰值会达到300MB左右，不过还好视频截图功能比较快，项目的主营业务并不是视频服务同时用户量也没达到，所以
+            出现同时解析多个视频的可能性比较小，我这里也针对单个服务的同时解析数量做了限制。</p>
+        <p>定义单服务全局变量，运行中数量和最大运行数量，我这里直接用的AtomicInteger记录运行数量，一般不会有任何问题。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/934ac22370bb4d90b19242b1515d7a3b.png"
+            style="width: 550px;height:80px"></img>
+        <p>当运行数量大于最大运行数量时等待一秒并回调尝试五次以上不成功则直接抛异常</p>
+        <p>当运行数量小于等于最大运行数量时先增加运行数量并将视频流加载到FFmpegFrameGrabber并开始视频</p>
+        <img src="https://www.gitdatsanvich.com/file/data/321d2703e7e2479ba53b4c98bb0f176c.png"
+            style="width: 1200px;height:900px"></img>
+        <fieldset class="layui-elem-field normal_size_field">
+            <legend>关于视频内一帧的截取</legend>
+            <p>我从网络上获取到很多关于JAVA获取视频图像的信息大部分都是通过FFmpegFrameGrabber.start() 这个方法执行过后，在后面执行一个while(true)方法。</p>
+            <p>这个做法无异于视频一边实时播放，每次执行while(true)内的代码块都去获取视频帧数，这样不仅效率慢，而且还耗费系统资源</p>
+            <p>我当前的做法是对视频总长度进行获取，将总长度除以10，每次获取前向后以总长度十分之一为单位跳跃并掐头去尾所对应的那八帧。</p>
+            <p>每次获取都要判断当前帧数是否为黑色帧，若不为黑直接生成图片并上传，不再向后获取。</p>
+            <img src="https://www.gitdatsanvich.com/file/data/4e1a4b2ba55a4a808d6fea9fd4814343.png"
+                style="width: 1200px;height:500px"></img>
+            <p>判断当前帧是否是黑色帧 需要获取当前图片长宽，并逐像素判断RGB三个值，我这里判断的RGB是否都小于50，当RGB都小于50的时候记录+1</p>
+            <p>再通过长款计算总帧数，用黑色帧数总数和总帧数计算当前图像明亮度，判断为黑返回true不为黑返回false</p>
+            <img src="https://www.gitdatsanvich.com/file/data/0682f7dfc46e4923a221ef20b99fa0ac.png"
+                style="width: 800px;height:850px"></img>
+        </fieldset>
+        <p>获取到视频截图后再接着就是针对视频截图的流复制，两个流分别用于原图片的存储和图片缩略图的存储，调用的仍然是之前写的那两个方法就不赘述了。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/6bf19398d4274224a42462cab3cb62e1.png"
+            style="width: 800px;height:400px"></img>
+        <fieldset class="layui-elem-field normal_size_field">
+            <legend>小结</legend>
+            <p>以上的代码是无数次修改后得到的，如果哪天又要换平台存储文件，只需要修改那个最早提到的保存方法就好了。</p>
+            <p>针对视频截图实在是太占用资源了，在视频处理完成之后一定要及时关闭FFmpegFrameGrabber，等JVM来处理太慢了。</p>
+            <p>切记关闭的时候要手动释放资源！！</p>
+            <img src="https://www.gitdatsanvich.com/file/data/30c73cc53fbd4fd4ab2db702545b2db0.png"
+                style="width: 800px;height:200px"></img>
+            <p></p>
+        </fieldset>
+        <fieldset class="layui-elem-field normal_size_field">
+            <div style="text-align: center;">
+                <p>最后我这开放一个文件上传的接口，各位可以试着上传下</p>
+                <div>
+                    <p style="display:inline;">文件可选多文件</p>
+                    <input multiple="multiple" type="file" style="display:inline;" id="upload_data" />
+                </div>
+                <br />
+                <div>
+                    <p style="display:inline;">指定类型？</p>
+                    <select style="display:inline;" id="upload_type">
+                        <option selected="selected" value="ALL_TYPE">全类型文件上传</option>
+                        <option value="IMAGE">图片</option>
+                        <option value="AUDIO">音频</option>
+                        <option value="VIDEO">视频</option>
+                    </select>
+                </div>
+                <br />
+                <div>
+                    <p style="display:inline;">是否需要缩略图？</p>
+                    <select style="display:inline;" id="upload_need_thumbnail">
+                        <option selected="selected" value=true>是</option>
+                        <option value=false>否</option>
+                    </select>
+                </div>
+                <br />
+                <button type="button" class="layui-btn layui-btn-warm layui-btn-primary;"
+                    onclick="upload_file()">上传！</button>
+            </div>
+
+            <div id="show_window" style="text-align: center;">
+            </div>
+        </fieldset>
+        <p></p>
+    </fieldset>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)"><i
+                class="layui-icon">&#xe65c;</i> 返回主页</button>
+        <br>
+    </div><br /><br /><br /><br /><br /><br />
+    </div>
+    <footer style="color:#b9b9b9;">
+        <span style="font-size:18px;">
+            <div style="text-align: center;">
+                <div style="text-align: center;display:inline;">您的IP</div>
+                <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+                <div style="text-align: center;display:inline;">已经访问这个网页</div>
+                <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+                <div style="text-align: center;display:inline">次，网页总访问量</div>
+                <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+                <div style="text-align: center;display:inline">次。</div>
+            </div>
+        </span>
+        <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+                style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+    </footer>
+    <script>
+        window.onload = function () {
+            web_access(false, 2);
+        }
+        function upload_file() {
+            //文件
+            var fileList = document.getElementById('upload_data').files;
+            //上传类型
+            var upload_type = document.getElementById('upload_type').options[document.getElementById('upload_type').selectedIndex].value;
+            //是否需要缩略图
+            var need_thumbnail = document.getElementById('upload_need_thumbnail').options[document.getElementById('upload_need_thumbnail').selectedIndex].value;
+            //拼接表单
+            var formData = new FormData();
+            for (let i = 0; i < fileList.length; i++) {
+                formData.append("fileList", fileList[i]);
+            }
+            formData.append("uploadType", upload_type);
+            formData.append("needThumbnail", need_thumbnail);
+            var sender = axios.create({
+                baseURL: base_url,
+                timeout: 60000,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            sender({
+                method: 'post',
+                url: '/file/upload',
+                data: formData
+            }).then(res => {
+                if (res.status === 404) {
+                    alert('访问404，请联系管理员');
+                }
+                if (res.status === 413) {
+                    alert('文件太大啦！为了减少服务器资源占用，每次请求请发送小于20MB的文件！')
+                }
+                if (res.data.code !== 0) {
+                    alert(res.data.msg);
+                } else if (res.data.code === 0) {
+                    console.log(res)
+                    //成功
+                    document.getElementById('show_window').innerHTML = '';
+                    var base_file_url = "https://www.gitdatsanvich.com/file/";
+                    var resList = res.data.data;
+                    var innerBuilder = '';
+                    for (let i = 0; i < resList.length; i++) {
+                        const element = resList[i];
+                        console.log(element);
+                        //文件名称
+                        var fileName = element.fileName;
+                        //文件类型
+                        var fileType = element.fileType;
+                        //文件URL
+                        var url = base_file_url + element.url;
+                        //文件缩略图
+                        var url_thumbnail = base_file_url + element.thumbnail;
+
+                        innerBuilder = innerBuilder + '<fieldset class="layui-elem-field normal_size_field">';
+                        innerBuilder = innerBuilder + '<legend>返回索引' + i + '</legend>';
+                        innerBuilder = innerBuilder + '<p>文件名称为：' + fileName + '</p>';
+                        innerBuilder = innerBuilder + '<p>文件类型为：' + fileType + '</p>';
+                        innerBuilder = innerBuilder + '<p>源文件为</p>';
+                        //被判断为图片
+                        if (fileType === 'IMAGE') {
+                            innerBuilder = innerBuilder + '<img src="' + url + '"></img>'
+                            if (element.thumbnail !== null && element.thumbnail !== '') {
+                                innerBuilder = innerBuilder + '<p>图片缩略图为</p>';
+                                innerBuilder = innerBuilder + '<img src="' + url_thumbnail + '"></img>';
+                            }
+                        } else if (fileType === 'VIDEO') {
+                            innerBuilder = innerBuilder + '<video src="' + url + '" width="90%"style="padding: 0 0 0 50px;" controls="controls"><source src="' + url + '" type="video/mp4"></video>'
+                            if (element.thumbnail !== null && element.thumbnail !== '') {
+                                innerBuilder = innerBuilder + '<p>视频封面图为</p>';
+                                innerBuilder = innerBuilder + '<img src="' + url_thumbnail + '"></img>';
+                                innerBuilder = innerBuilder + '<p>视频封面的缩略图为</p>'
+                                var index = url_thumbnail.lastIndexOf(".");
+                                var extension = url_thumbnail.substring(index, url_thumbnail.length);
+                                var name = url_thumbnail.substring(0, index);
+                                innerBuilder = innerBuilder + '<img src="' + name + '_thumbnail' + extension + '"></img>';
+                            }
+                        } else {
+                            innerBuilder = innerBuilder + '<a style="display: block;"href="' + url + '">' + fileName + '</a>';
+                        }
+                        innerBuilder = innerBuilder + '</fieldset>';
+                    }
+                    document.getElementById('show_window').innerHTML = innerBuilder;
+                }
+            }).catch(err => {
+                 alert('超时啦！看看是不是文件太大啦!');
+            })
+        }
+    </script>
+</body>
+
+</html>

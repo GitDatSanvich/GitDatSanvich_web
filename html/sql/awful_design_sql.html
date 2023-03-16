@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>糟糕的设计产生的sql</title>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
+    <style>
+        .first_size_field {
+            width: 95%;
+            margin: 100px auto 0;
+        }
+
+        .normal_size_field {
+            width: 95%;
+            margin: 20px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        img {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        footer {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            bottom: 0;
+            bottom: 0px;
+            left: 0px;
+            background: #252222;
+        }
+
+        .wgt-header-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 995;
+            width: 100%;
+            height: 50px;
+            background-color: #fff;
+        }
+
+        .wgt-header-title-shadow {
+            box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+
+        }
+
+        .wgt-header-title-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 594px;
+            font: 24px PingFangSC-Medium;
+            color: #333;
+            line-height: 55px;
+            vertical-align: middle;
+        }
+
+        .wgt-header-title-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wgt-header-title wgt-header-title-shadow">
+        <div class="wgt-header-title-content" style="display: block;">
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">糟糕的设计产生的sql</h1>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>需求描述</legend>
+        <p>这个需求来自于一个同事他叫我帮他解决一个问题，需要对一个表内的数据进行类别筛选，表内数据对应类别为一对多的关系，存储的结构是另一个已经离职了的同事写的。</p>
+        <p>一条数据对应的多个类型拓展了个字段，统统和业务数据存在了一起，通过逗号分隔开。</p>
+        <p>大概是这个样子的（这里 ↓ 弄了个示例并不是业务数据）</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/cd24b226648a420682f102d178d68913.png"
+            style="width: 200px;height:100px" />
+        <p>查询的入参方式也定了大概是这个样子的</p>
+        <p>字符串：“1,3”</p>
+        <p>查询的逻辑大概是当查询的字符串，里有1和3时，要筛选出所有分类带1，或分类带3的数据</p>
+    </fieldset>
+    <fieldset class="layui-elem-field normal_size_field">
+        <legend>sql实现</legend>
+        <p>首先先说思路</p>
+        <p>查询的字段是这样的"1,3" 被查询的字段是这样的"1,2,3,4,5"</p>
+        <p>把先把查询的"1,3"字段的一条数据拆分成两条，再把被查询的"1,2,3,4,5"字段拆分成多条通过sql的IN()方法拼接</p>
+        <p>网上查了查 由于用的是mysql 只能使用mysql的help_topic来实现</p>
+        <p>先是原数据拆分 原数据：</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/40c5ae2797bf43dabe2d1be9f07e5cf9.png"
+            style="width: 300px;height:400px" />
+        <p>拆分后的原数据：</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/92fab371d3fa47c288787097be13650e.png"
+            style="width: 700px;height:600px" />
+        <p>参数拆分（这里的示例参数是 '1,3'）：</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/47281c90960c48248959cc87ea5db157.png"
+            style="width: 900px;height:300px" />
+        <p>最后用IN()连接上面的两个sql并通过ID分组</p>
+        <img title="图片加载失败" src="https://www.gitdatsanvich.com/file/data/6dc8dd882fdc42c5b514510ae66e4da7.png"
+            style="width: 900px;height:1000px" />
+        <p>写在最后：上面的方案并非最佳的解决方案，最佳解决方案当然是应该改设计，当前设计在数据量大的情况下有可能会导致数据库查询慢等情况。</p>
+        <p>在我的再三嘱咐下同事跑去从库查了:)。</p>
+    </fieldset>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)">
+            <i class="layui-icon">&#xe65c;</i> 返回主页</button>
+        <br />
+    </div><br /><br /><br /><br /><br /><br />
+    </div>
+    <footer style="color:#b9b9b9;">
+        <span style="font-size:18px;">
+            <div style="text-align: center;">
+                <div style="text-align: center;display:inline;">您的IP</div>
+                <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+                <div style="text-align: center;display:inline;">已经访问这个网页</div>
+                <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+                <div style="text-align: center;display:inline">次，网页总访问量</div>
+                <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+                <div style="text-align: center;display:inline">次。</div>
+            </div>
+        </span>
+        <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+                style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+    </footer>
+    <script>
+        window.onload = function () {
+            web_access(false, 3);
+        }
+    </script>
+</body>
+
+</html>

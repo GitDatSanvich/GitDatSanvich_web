@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>客制化的阻塞线程池</title>
+    <link rel="stylesheet" href="../../third_party/layui/css/layui.css">
+    <script src="../../third_party/layui/layui.all.js"></script>
+    <script src="../../js/web_access.js"></script>
+    <script src="../../third_party/axios/axios.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/base_url.js"></script>
+    <style>
+        .first_size_field {
+            width: 95%;
+            margin: 100px auto 0;
+        }
+
+        .normal_size_field {
+            width: 95%;
+            margin: 20px auto 0;
+        }
+
+        .button_div {
+            padding: 10px;
+            margin: 0 auto !important;
+            display: block;
+            text-align: center;
+        }
+
+        .button_div button {
+            margin-top: 10px;
+        }
+
+        p {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        img {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            padding: 0 0 0 50px;
+        }
+
+        footer {
+            width: 100%;
+            height: 70px;
+            position: fixed;
+            bottom: 0;
+            bottom: 0px;
+            left: 0px;
+            background: #252222;
+        }
+
+        .wgt-header-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 995;
+            width: 100%;
+            height: 50px;
+            background-color: #fff;
+        }
+
+        .wgt-header-title-shadow {
+            box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+
+        }
+
+        .wgt-header-title-text {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 594px;
+            font: 24px PingFangSC-Medium;
+            color: #333;
+            line-height: 55px;
+            vertical-align: middle;
+        }
+
+        .wgt-header-title-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wgt-header-title wgt-header-title-shadow">
+        <div class="wgt-header-title-content" style="display: block;">
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" style="display:inline-block;"
+                onclick="backToIndex(2)"><i class="layui-icon">&#xe65c;</i> 返回主页</button>
+            <h1 class="wgt-header-title-text" style="display:inline-block;padding: 0 0 0 25px;">客制化的阻塞线程池</h1>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field first_size_field">
+        <legend>需求描述</legend>
+        <p>这个需求来自于当时开发的一个健康管理微服务，会在晚上触发执行一个针对用户身体指标增量数据处理的处理任务。</p>
+        <p>刚开始这个任务处理在开发测试上线一直没有出问题，后来随着用户量增加，这个任务经常会从凌晨跑到上午后来跑到下午再后来跑到晚上，甚至上次任务没结束下次任务又开始了。</p>
+        <p>为了加快处理速度，同时也为了避免改动复杂的处理逻辑，所以开发了这个客制化的阻塞线程池。</p>
+    </fieldset>
+    <fieldset class="layui-elem-field normal_size_field">
+        <legend>阻塞线程池主要逻辑</legend>
+        <p>一、加载</p>
+        <p style="padding: 0 0 0 75px;">1.在项目启动时加载</p>
+        <img src="https://www.gitdatsanvich.com/file/data/65c94d6893194222ad32e2eb8328b642.png"
+            style="width: 1300px;height:325px"></img>
+        <p>二、调用</p>
+        <p style="padding: 0 0 0 75px;">以下为对外开放的两个调用方法</p>
+        <p>同步触发↓触发等待处理完成后返回返回值并向下执行</p>
+        <img src="https://www.gitdatsanvich.com/file/data/da76ef0f6b8b4ebf8804732f3c3e9d98.png"
+            style="width: 900px;height:300px"></img>
+        <p>异步触发↓异步触发后直接向后执行忽略线程池内结果无返回值</p>
+        <img src="https://www.gitdatsanvich.com/file/data/c5d97529614e4dbb83005bd2f9e9dccf.png"
+            style="width: 900px;height:450px"></img>
+        <p>三、同步触发运行逻辑</p>
+        <p style="padding: 0 0 0 75px;">1.将任务循环，依次放入阻塞线程池中</p>
+        <p style="padding: 0 0 0 75px;">2.循环的同时收集线程信息Future对象</p>
+        <img src="https://www.gitdatsanvich.com/file/data/1a8819817fa845b39c5fe337945cc018.png"
+            style="width: 750px;height:450px"></img>
+        <p style="padding: 0 0 0 75px;">
+            3.针对收集到的线程池信息进行线程监控，包括超时异常线程取消，这个类由于被Spring管理所以可以在出现异常时候对异常进行入库处理。不过业务相关的异常还是最好在任务的业务里处理掉。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/0eadedc3b5b448779b4b0f724e2edde3.png"
+            style="width: 750px;height:600px"></img>
+        <p style="padding: 0 0 0 75px;">4.最后将结果返回</p>
+        <p>四、异步触发运行逻辑</p>
+        <p style="padding: 0 0 0 75px;">1.将任务循环，依次放入阻塞线程池中</p>
+        <p style="padding: 0 0 0 75px;">2.循环的同时收集线程信息Future对象</p>
+        <img src="https://www.gitdatsanvich.com/file/data/643b87536d7747339e6cc84d4fba9e10.png"
+            style="width: 750px;height:330px"></img>
+        <p style="padding: 0 0 0 75px;">3.再创建异步线程针对收集到的线程池信息进行线程监控，监控逻辑基本同上，将这个异步线程放入线程池中。</p>
+        <img src="https://www.gitdatsanvich.com/file/data/ae626b421130497990f126be540102b8.png"
+            style="width: 750px;height:450px"></img>
+        <p>五、阻塞拒绝的线程的处理方式</p>
+        <p>由于使用的是阻塞线程池，当正在最大线程数被占满且仍然还有线程进入时，会有部分线程被拒绝掉。</p>
+        <p>针对因为阻塞被拒绝的线程，将等待1秒后再次尝试提交到线程池中。</p>
+        <p>切记不能等待时间过少，当提交任务过于繁重时过于频繁的提交任务导致的单一任务提交次数过多会导致整个线程池异常</p>
+        <img src="https://www.gitdatsanvich.com/file/data/c5652fceb416418c8e9d8bad5e688627.png"
+            style="width: 750px;height:600px"></img>
+        <fieldset class="layui-elem-field normal_size_field">
+            <legend>小结</legend>
+            <p>在使用这个线程池之后任务处理被压缩到了2个小时不到，天亮的时候服务器腰不酸了腿不痛了，爬楼都有劲了:)，但同时也导致了凌晨服务器CPU跑满的问题。</p>
+            <p>这个服务器的算力不够纯靠代码真的没办法了，大数据量的处理还是尽量多申请申请服务器吧。</p>
+            <a style="display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-size: 18px;
+            text-align:center;" href="https://www.gitdatsanvich.com/file/data/static/BlockedThreadPool.java">下载代码</a>
+        </fieldset>
+        <p></p>
+        <p></p>
+    </fieldset>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-radius layui-btn-primary;" onclick="backToIndex(2)"><i
+                class="layui-icon">&#xe65c;</i> 返回主页</button>
+        <br/>
+    </div><br /><br /><br /><br /><br /><br />
+    </div>
+    <footer style="color:#b9b9b9;">
+        <span style="font-size:18px;">
+            <div style="text-align: center;">
+                <div style="text-align: center;display:inline;">您的IP</div>
+                <div id="access_id" style="text-align: center;display:inline;color:#ff0000;"></div>
+                <div style="text-align: center;display:inline;">已经访问这个网页</div>
+                <div id="access_time" style="text-align: center;display:inline;color:#00ff40;"></div>
+                <div style="text-align: center;display:inline">次，网页总访问量</div>
+                <div id="access_time_total" style="text-align: center;display:inline;color:#eeff00;"></div>
+                <div style="text-align: center;display:inline">次。</div>
+            </div>
+        </span>
+        <p style="text-align: center;">联系我: <a href="mailto:tc704321764@outlook.com"
+                style="color:#b9b9b9;">tc704321764@outlook.com</a></p>
+    </footer>
+    <script>
+        window.onload = function () {
+            web_access(false, 2);
+        }
+    </script>
+</body>
+
+</html>
