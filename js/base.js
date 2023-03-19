@@ -13,6 +13,7 @@ var java_url = [
     "/html/java/analysis_video_cover.html",
     "www.baidu.com",
     "/html/java/log_viewer.html",
+    "/html/java/chat_GPT.html",
 ];
 var python_url = [
     "/html/python/one_finger_auto_cheat.html"
